@@ -1,0 +1,144 @@
+@import './vant.less';
+@import './base.less';
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  font-weight: normal;
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--van-gray-1);
+  color-scheme: light;
+}
+
+html.dark {
+  background: var(--vt-c-black-soft);
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+strong {
+  font-weight: bold;
+}
+
+i,
+span {
+  display: inline-block;
+}
+
+#app {
+  height: 100vh;
+  // Dynamic Viewport Units
+  height: 100dvh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.page {
+  padding-top: var(--van-nav-bar-height);
+  padding-left: 16px;
+  padding-right: 16px;
+  overflow-x: hidden;
+  @apply bg-white;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.slide-fadein-left-enter-active,
+.slide-fadein-left-leave-active,
+.slide-fadein-right-enter-active,
+.slide-fadein-right-leave-active {
+  transition:
+    opacity 0.3s,
+    transform 0.2s,
+    -webkit-transform 0.2s;
+}
+
+.slide-fadein-left-enter-from,
+.slide-fadein-right-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.slide-fadein-left-leave-to,
+.slide-fadein-right-enter-from {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+
+.avatar-small {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+.red {
+  color: var(--color-warning);
+}
+
+.fixed-bottom {
+  @apply position-fixed bottom-0 left-0 right-0 p-16 bg-white;
+  box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.05);
+}
+
+.word-break {
+  @apply whitespace-break-spaces break-words;
+  word-break: break-word;
+}
+
+.line-truncate(@line) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: @line;
+  -webkit-box-orient: vertical;
+}
+
+.calendar-field,
+.picker-field {
+  .van-field__value {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border: none !important;
+  }
+
+  .van-button {
+    &__text {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

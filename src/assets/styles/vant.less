@@ -1,0 +1,124 @@
+.van-button {
+  &__text {
+    @apply flex items-center;
+  }
+}
+
+.van-col {
+
+  >div,
+  >span {
+    height: 100%;
+  }
+}
+
+.van-calendar {
+  &__footer {
+    @apply mb-10;
+
+    .van-button {
+      @apply b-rd-6;
+    }
+  }
+}
+
+.van-search {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 6px;
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+
+  &__field {
+    margin: 0 !important;
+    background-color: white !important;
+  }
+
+  .van-field__control {
+    font-size: 16px !important;
+  }
+
+  &__content {
+    padding-left: 0 !important;
+  }
+}
+
+::placeholder {
+  color: var(--color-text-3) !important;
+}
+
+.van-tabs {
+  &__line {
+    height: 2px !important;
+  }
+
+  &__full-width {
+    .van-tabs__line {
+      width: 50% !important;
+    }
+  }
+
+  .van-tab {
+    &__panel {
+      padding-top: 20px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    &--active {
+      color: var(--color-text-primary) !important
+    }
+  }
+}
+
+.van-form {
+  .van-field {
+    flex-direction: column;
+    @apply px-0;
+
+    &:after {
+      border: none;
+    }
+
+    &__label {
+      width: 100%;
+      @apply mr-0 mb-4 flex items-center;
+    }
+
+    label {
+      @apply font-500 font-size-15;
+    }
+
+    &.van-cell--clickable {
+      flex-direction: row;
+
+      &:active {
+        background-color: initial;
+      }
+
+      .van-cell__value {
+        flex: 100%;
+        border: 1px solid var(--color-border);
+        @apply b-rd-6 px-12 py-8;
+      }
+
+      >.van-cell__right-icon {
+        display: none;
+      }
+    }
+
+    .van-cell__value {
+      position: unset;
+    }
+
+    &__word-limit {
+      position: absolute;
+      top: 10px;
+      right: 0;
+    }
+
+    textarea {
+      border: 1px solid var(--color-border);
+      @apply py-8 px-12 font-size-16 border-rd-6;
+    }
+  }
+}
