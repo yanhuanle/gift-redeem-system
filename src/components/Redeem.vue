@@ -1,80 +1,150 @@
 <script setup lang="ts">
 import { showToast } from 'vant'
 
-const handleFocus = () => {
-  let length = values.value.length
-  if (length < 4) {
-    field1.value.focus()
-  }
-  else if (length >= 4 && length < 8) {
-    field2.value.focus()
-  }
-  else if (length >= 8 && length < 12) {
-    field3.value.focus()
-  }
-  else if (length >= 12 && length < 16) {
-    field4.value.focus()
-  }
-  else {
-    field1.value.blur()
-    field2.value.blur()
-    field3.value.blur()
-    field4.value.blur()
-  }
+interface VerifyCodeRequest {
+  code: string; // 完整兑换码
 }
+
+interface VerifyCodeResponse {
+  success: boolean;
+  giftInfo?: {
+    id: string;
+    name: string;
+    description: string;
+    expireTime: string;
+    items: Array<{
+      id: string;
+      name: string;
+      icon: string;
+      amount: number;
+    }>;
+  };
+  error?: {
+    code: number;
+    message: string;
+  };
+}
+
+const isPasting = ref(false)
+
+const cellGroup = ref(null)
 
 const field1 = ref(null)
 const value1 = ref('')
 watch(value1, val => {
   if (val.length >= 4) {
-    // console.log('1:', val);
     value1.value = val.slice(0, 4)
-    field2.value.focus()
+    if (!isPasting.value) {
+      field2.value.focus()
+    }
   }
 })
 
 const field2 = ref(null)
 const value2 = ref('')
 watch(value2, val => {
-  // console.log('2:', val);
   if (val.length >= 4) {
     value2.value = val.slice(0, 4)
-    field3.value.focus()
+    if (!isPasting.value) {
+      field3.value.focus()
+    }
   }
 })
 
 const field3 = ref(null)
 const value3 = ref('')
 watch(value3, val => {
-  // console.log('3:', val);
   if (val.length >= 4) {
     value3.value = val.slice(0, 4)
-    field4.value.focus()
+    if (!isPasting.value) {
+      field4.value.focus()
+    }
   }
 })
 
 const field4 = ref(null)
 const value4 = ref('')
 watch(value4, val => {
-  // console.log('4:', val);
   if (val.length >= 4) {
     value4.value = val.slice(0, 4)
     field4.value.blur()
-    showToast('验证中...')
-    setTimeout(() => {
-      showToast('兑换成功')
-    }, 1000)
+    redeem()
   }
 })
 
-const values = computed(() => {
-  return value1.value + value2.value + value3.value + value4.value
+const values = computed((): VerifyCodeRequest => {
+  return {
+    code: value1.value + value2.value + value3.value + value4.value
+  }
 })
+
+// 当前兑换码输入到第几组
+const stage = computed(() => {
+  let length = values.value.code.length
+  if (length < 4) {
+    return 1
+  }
+  else if (length >= 4 && length < 8) {
+    return 2
+  }
+  else if (length >= 8 && length < 12) {
+    return 3
+  }
+  else if (length >= 12 && length < 16) {
+    return 4
+  }
+  else {
+    return 5
+  }
+})
+
+const handleFocus = () => {
+  switch (stage.value) {
+    case 1:
+      field1.value.focus()
+      break
+    case 2:
+      field2.value.focus()
+      break
+    case 3:
+      field3.value.focus()
+      break
+    case 4:
+      field4.value.focus()
+      break
+    default:
+      field1.value.blur()
+      field2.value.blur()
+      field3.value.blur()
+      field4.value.blur()
+  }
+}
+
+const handleDelete = () => {
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Backspace') {
+      // 在这里执行需要的操作
+      if (values.value.code.length <= 4) {
+        const input = cellGroup.value.querySelector('input')
+        input.setSelectionRange(input.value.length, input.value.length);
+
+        field1.value.focus()
+      }
+      else if (values.value.code.length <= 8) {
+        field2.value.focus()
+      }
+      else if (values.value.code.length <= 12) {
+        field3.value.focus()
+      }
+    }
+  })
+}
 
 const handlePaste = () => {
   var inputElement = document.body
   // 添加粘贴事件监听器
   inputElement.addEventListener('paste', function (event) {
+    isPasting.value = true
     // 可以通过event.clipboardData获取剪贴板数据
     var clipboardData = event.clipboardData || window.clipboardData
     var pastedText = clipboardData.getData('Text');
@@ -84,19 +154,72 @@ const handlePaste = () => {
       pastedText.slice(8, 12),
       pastedText.slice(12)
     ]
+
+    switch (stage.value) {
+      case 1:
+        field1.value.blur()
+        setTimeout(() => {
+          field1.value.focus()
+        }, 1)
+        break
+      case 2:
+        field2.value.blur()
+        setTimeout(() => {
+          field2.value.focus()
+        }, 100)
+        break
+      case 3:
+        field3.value.blur()
+        setTimeout(() => {
+          field3.value.focus()
+        }, 1)
+        break
+      default:
+        field4.value.blur()
+        setTimeout(() => {
+          field4.value.focus()
+        }, 1)
+    }
+
+    setTimeout(() => {
+      isPasting.value = false
+    }, 200)
   })
+}
+
+const redeem = async () => {
+  showToast('验证中...')
+
+  // TODO: 发送兑换请求
+
+  // let values: VerifyCodeRequest = {
+  //   code: value1.value + value2.value + value3.value + value4.value
+  // }
+
+  // const res: VerifyCodeResponse = await request.post(`/code-redeem`, { values })
+  // if (res.success) {
+  //   showToast('兑换成功')
+  // }
+  // else {
+  //   showToast('兑换失败')
+  // }
+
+  setTimeout(() => {
+    showToast('兑换成功')
+  }, 1000)
 }
 
 onMounted(() => {
   field1.value.focus()
   handlePaste()
+  handleDelete()
 })
 </script>
 
 <template>
   <div class="redeem">
     <van-field model-value="请输入兑换码（4组，每组4位）" readonly />
-    <div class="cell-group" @click="handleFocus">
+    <div ref="cellGroup" class="cell-group" @click="handleFocus">
       <div class="field-wrapper relative">
         <van-field ref="field1" v-model="value1" @paste="(e) => e.returnValue = false" />
         <div class="field-seperator">
@@ -141,9 +264,10 @@ onMounted(() => {
     margin-bottom: 10px;
     padding-left: 0;
     padding-right: 0;
+
     :deep(input) {
-      // padding: 0 40px;
-      padding-left: 40px;;
+      padding-left: 40px;
+      ;
       letter-spacing: 40px;
     }
   }
