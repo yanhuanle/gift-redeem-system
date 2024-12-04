@@ -4,7 +4,7 @@ import App from '@/App.vue'
 import router from '@/router'
 import store from '@/stores'
 import '@/assets/styles/app.less'
-import { Button, Icon } from 'vant'
+import { Button, Icon, Field, CellGroup } from 'vant'
 import mitt from 'mitt'
 
 // Vant 桌面端适配
@@ -20,7 +20,6 @@ import 'vant/es/toast/style'
 import 'vant/es/dialog/style'
 import 'vant/es/notify/style'
 import 'vant/es/image-preview/style'
-
 import 'virtual:uno.css'
 
 const app = createApp(App)
@@ -31,6 +30,8 @@ app.use(head)
   .use(store)
   .use(Button)
   .use(Icon)
+  .use(Field)
+  .use(CellGroup)
 
 // 事件发布订阅
 app.config.globalProperties.$emitter = mitt()
