@@ -40,12 +40,25 @@ const { initializeThemeSwitcher } = AutoThemeSwitcher(appStore)
 onMounted(() => {
   initializeThemeSwitcher()
 })
+
+const route = useRoute()
+const AsyncNavBar = shallowRef('undefined')
+let modules = import.meta.glob('@/views/**/NavBar.vue')
+watch(route, () => {
+  const loader = modules[`/src/views/${route.name}/NavBar.vue`]
+  if (loader) {
+    loader().then(data => {
+      AsyncNavBar.value = data.default
+    })
+  }
+})
 </script>
 
 <template>
   <VanConfigProvider :theme="mode">
     <router-view v-slot="{ Component, route }">
-      <NavBar />
+      <AsyncNavBar v-if="route.meta.localNav" />
+      <NavBar v-else />
 
       <transition :name="routeTransitionName">
         <keep-alive>

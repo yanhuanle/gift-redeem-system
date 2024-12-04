@@ -4,7 +4,7 @@ import App from '@/App.vue'
 import router from '@/router'
 import store from '@/stores'
 import '@/assets/styles/app.less'
-import { Button, Icon, Field, CellGroup, Card } from 'vant'
+import { Button, Icon, Field, CellGroup, Card, SwipeCell } from 'vant'
 import mitt from 'mitt'
 
 // Vant 桌面端适配
@@ -32,6 +32,8 @@ app.use(head)
   .use(Icon)
   .use(Field)
   .use(CellGroup)
+  .use(Card)
+  .use(SwipeCell)
 
 // 事件发布订阅
 app.config.globalProperties.$emitter = mitt()

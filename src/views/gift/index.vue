@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { showToast, showDialog } from 'vant';
+import { showToast, showDialog } from 'vant'
 
 definePage({
   name: 'gift',
