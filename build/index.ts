@@ -1,7 +1,6 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { unheadVueComposablesImports } from '@unhead/vue'
-import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import transformerDirective from "@unocss/transformer-directives";
@@ -82,11 +81,6 @@ export function createVitePlugins(mode) {
     VueI18nPlugin({
       // locale messages resource pre-compile option
       include: resolve(dirname(fileURLToPath(import.meta.url)), '../../src/locales/**'),
-    }),
-
-    legacy({
-      // targets: ['defaults', 'Android >= 9'],
-      polyfills: ['es.string.replace-all', 'esnext.string.replace-all'],
     }),
 
     // https://github.com/antfu/unocss

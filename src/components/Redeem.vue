@@ -12,8 +12,14 @@ const handleFocus = () => {
   else if (length >= 8 && length < 12) {
     field3.value.focus()
   }
-  else {
+  else if (length >= 12 && length < 16) {
     field4.value.focus()
+  }
+  else {
+    field1.value.blur()
+    field2.value.blur()
+    field3.value.blur()
+    field4.value.blur()
   }
 }
 
@@ -53,6 +59,7 @@ watch(value4, val => {
   // console.log('4:', val);
   if (val.length >= 4) {
     value4.value = val.slice(0, 4)
+    field4.value.blur()
     showToast('验证中...')
     setTimeout(() => {
       showToast('兑换成功')
@@ -89,22 +96,86 @@ onMounted(() => {
 <template>
   <div class="redeem">
     <van-field model-value="请输入兑换码（4组，每组4位）" readonly />
-    <van-cell-group inset @click="handleFocus">
-      <van-field ref="field1" v-model="value1" @paste="(e) => e.returnValue = false" />
-      <van-field ref="field2" v-model="value2" @paste="(e) => e.returnValue = false" />
-      <van-field ref="field3" v-model="value3" @paste="(e) => e.returnValue = false" />
-      <van-field ref="field4" v-model="value4" @paste="(e) => e.returnValue = false" />
-    </van-cell-group>
+    <div class="cell-group" @click="handleFocus">
+      <div class="field-wrapper relative">
+        <van-field ref="field1" v-model="value1" @paste="(e) => e.returnValue = false" />
+        <div class="field-seperator">
+          <span class="seperator"></span>
+          <span class="seperator"></span>
+          <span class="seperator"></span>
+        </div>
+      </div>
+      <div class="field-wrapper relative">
+        <van-field ref="field2" v-model="value2" @paste="(e) => e.returnValue = false" />
+        <div class="field-seperator">
+          <span class="seperator"></span>
+          <span class="seperator"></span>
+          <span class="seperator"></span>
+        </div>
+      </div>
+      <div class="field-wrapper relative">
+        <van-field ref="field3" v-model="value3" @paste="(e) => e.returnValue = false" />
+        <div class="field-seperator">
+          <span class="seperator"></span>
+          <span class="seperator"></span>
+          <span class="seperator"></span>
+        </div>
+      </div>
+      <div class="field-wrapper relative">
+        <van-field ref="field4" maxlength="4" v-model="value4" @paste="(e) => e.returnValue = false" />
+        <div class="field-seperator">
+          <span class="seperator"></span>
+          <span class="seperator"></span>
+          <span class="seperator"></span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="less" scoped>
-.van-cell-group {
-
+.cell-group {
   .van-cell {
     border: 1px solid #e5e5e5;
     border-radius: 10px;
     margin-bottom: 10px;
+    padding-left: 0;
+    padding-right: 0;
+    :deep(input) {
+      // padding: 0 40px;
+      padding-left: 40px;;
+      letter-spacing: 40px;
+    }
+  }
+
+  .field-seperator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    .seperator {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 10px;
+      background-color: #e5e5e5;
+      top: 50%;
+      transform: translateY(-2.5px);
+
+      &:first-child {
+        left: 29%;
+      }
+
+      &:nth-child(2) {
+        left: 50%;
+      }
+
+      &:nth-child(3) {
+        left: 71%;
+      }
+    }
   }
 }
 </style>

@@ -8,17 +8,17 @@ const props = defineProps({
     default: () => {
       return [
         {
-          icon: 'i-ep:document',
+          icon: 'i-token:acria',
           text: '兑换',
           path: '/home'
         },
         {
-          icon: 'i-ep:document',
+          icon: 'i-bx:gift',
           text: '礼包',
           path: '/gift'
         },
         {
-          icon: 'i-ep:document',
+          icon: 'i-mdi:history',
           text: '历史',
           path: '/records'
         },

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { showConfirmDialog, showToast } from 'vant'
 
+import useRecordStore from '@/stores/modules/records'
+const recordsStore = useRecordStore()
+const { clearRecords } = recordsStore
+
 function onBack() {
   if (window.history.state.back) {
     history.back()
@@ -19,6 +23,7 @@ const onClick = () => {
   })
     .then(() => {
       // on confirm
+      clearRecords()
       showToast('历史记录已清除')
     })
     .catch(() => {
@@ -36,7 +41,6 @@ const onClick = () => {
     <template #right>
       <span class='van-nav-bar__right__button' @click="onClick">
         <span style="color: var(--color-text-primary)">
-          <!-- <i class="i-iconamoon:edit-duotone w-1em h-1em mr-5"></i> -->
           <span>清除</span>
         </span>
       </span>
